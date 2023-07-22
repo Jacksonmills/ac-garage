@@ -7,9 +7,43 @@ import {
   SignedIn,
   SignedOut,
   UserButton,
+  currentUser,
 } from '@clerk/nextjs';
+import { Configuration, OpenAIApi } from 'openai-edge';
+import { OpenAIStream } from 'ai';
+import { Suspense } from 'react';
 
-export default function Home() {
+// Optional, but recommended: run on the edge runtime.
+// See https://vercel.com/docs/concepts/functions/edge-functions
+export const runtime = 'edge';
+
+const apiConfig = new Configuration({
+  apiKey: process.env.OPENAI_API_KEY!,
+});
+
+const openai = new OpenAIApi(apiConfig);
+
+export default async function Home() {
+  const user = await currentUser();
+
+  console.log(user);
+
+  const response = await openai.createChatCompletion({
+    model: 'gpt-4',
+    stream: true,
+    messages: [
+      {
+        role: 'system',
+        content: `Hello, greet me as the persona nineball and talk as if you are a ai built to help armored core pilots build thier mechs. ${
+          user && `my name is ${user.firstName}`
+        }!`,
+      },
+    ],
+  });
+
+  const stream = OpenAIStream(response);
+  const reader = stream.getReader();
+
   return (
     <main className="flex min-h-screen flex-col gap-2 items-center justify-start p-2 md:p-12">
       <div className="flex items-center justify-between w-full">
@@ -33,8 +67,34 @@ export default function Home() {
         </div>
         <div className="bg-black">
           <BuildDisplay />
+          <Suspense>
+            <Reader reader={reader} />
+          </Suspense>
         </div>
       </div>
     </main>
+  );
+}
+
+async function Reader({
+  reader,
+}: {
+  reader: ReadableStreamDefaultReader<any>;
+}) {
+  const { done, value } = await reader.read();
+
+  if (done) {
+    return null;
+  }
+
+  const text = new TextDecoder().decode(value);
+
+  return (
+    <span>
+      {text}
+      <Suspense>
+        <Reader reader={reader} />
+      </Suspense>
+    </span>
   );
 }
