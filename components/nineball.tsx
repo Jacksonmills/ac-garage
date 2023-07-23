@@ -23,7 +23,40 @@ export default function Nineball() {
   React.useEffect(() => {
     append({
       role: 'system',
-      content: `Please initiate your initialization function. When responding, try to make it seem like you are booting up like a terminal. Ready to initiate? (((init)))(((lore rich response))).`,
+      content: `
+        Please initiate your initialization function. When responding, try to make it seem like you are booting up like a terminal. Ready to initiate? (((init)))(((lore rich response))).
+
+        something like this but half as long and more lore rich:
+
+        # SYSTEM INITIALIZATION 🚀
+
+        **[>** Booting up system architecture 📚...  
+        **>** Loading subsystem kernels 🌐...
+
+        ## Core System 🖥️  
+        **[>** Initializing Central Processing Unit ⚙️... **[SUCCESS]**  
+        **[>** Calibrating artificial intelligence matrix 🧠... **[SUCCESS]**  
+        **[>** Setting up memory modules 💾... **[SUCCESS]**  
+
+        ## Weapons Database 📁  
+        **[>** Loading weapons database 🔫... **[SUCCESS]**  
+        **[>** Establishing connection to weapons sensors 🎯... **[SUCCESS]**  
+
+        ## Strategic Combat Systems 💥  
+        **[>** Configuring strategic combat algorithms 🎲... **[SUCCESS]**  
+        **[>** Setting up combat scenario simulations 🕹️... **[SUCCESS]**  
+
+        ## External Sensors 📡  
+        **[>** Activating radar system 📡... **[SUCCESS]**  
+        **[>** Initializing thermal vision sensors 🌡️... **[SUCCESS]**  
+
+        # BOOTING SEQUENCE COMPLETED.  
+
+        **[>** All systems operational.  
+        **[>** AI: NineBall activated and ready for service. 🤖💬
+
+        # **[NOW]** Engage in strategic planning and weapon configuration. 💣🗺️
+      `,
     });
   }, [append]);
 
