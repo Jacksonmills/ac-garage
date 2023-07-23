@@ -1,4 +1,120 @@
-export const parts = {
+export interface BasePart {
+  name: string;
+  price: number;
+  unlock: string;
+  weight?: number;
+}
+
+interface BaseWeapon {
+  name: string;
+  price: number;
+  weight: number;
+  energyDrain: number;
+  unlock: string;
+}
+
+interface BackWeapon extends BaseWeapon {
+  weaponLock: string;
+  attackPower: string | number;
+  numberOfAmmo: string | number;
+  ammoType: string;
+  ammoPrice: string | number;
+  range: number;
+  maximumLock: string | number;
+  reloadTime: number | string;
+}
+
+interface ArmWeaponL extends BaseWeapon {
+  chargeDrain: number;
+  attackPower: number;
+}
+
+interface ArmWeaponR extends BaseWeapon {
+  weaponLock: string;
+  attackPower: number;
+  numberOfAmmo: number;
+  ammoType: string;
+  ammoPrice: number;
+  range: number;
+  maximumLock: number;
+  reloadTime: number;
+}
+
+export interface BaseArmorPart extends BasePart {
+  energyDrain: number;
+  armorPoints: number;
+  shellDefense: number;
+  energyDefense: number;
+}
+
+export interface Head extends BaseArmorPart {
+  computerType: string;
+  mapType: string;
+  noiseCanceler: boolean;
+  bioSensor: boolean;
+  radarFunction: boolean;
+  radarRange: string | number;
+}
+
+export interface Core extends BaseArmorPart {
+  maximumWeight: number;
+  antiMissileResponse: number;
+  antiMissileAngle: number;
+  extensionSlots: number;
+}
+
+export interface Arm extends BaseArmorPart {
+  weaponLock: string;
+  attackPower: string | number;
+  numberOfAmmo: string | number;
+  ammoType: string | number;
+  ammoPrice: string | number;
+  range: string | number;
+  maximumLock: string | number;
+  reloadTime: string | number;
+}
+
+export interface Leg extends BaseArmorPart {
+  legType: string;
+  maximumWeight: number;
+  speed: number;
+  stability: number;
+  jumpFunction: boolean;
+}
+
+export interface Generator extends BasePart {
+  energyOutput: number;
+  maximumCharge: number;
+  redzone: number;
+}
+
+export interface FCS extends BasePart {
+  energyDrain: number;
+  maximumLock: number;
+  lockType: string;
+}
+
+export interface Booster extends BasePart {
+  energyDrain: number;
+  boostPower: number;
+  chargeDrain: number;
+}
+
+export interface Parts {
+  heads: Record<string, Head>;
+  cores: Record<string, Core>;
+  arms: Record<string, Arm>;
+  legs: Record<string, Leg>;
+  generators: Record<string, Generator>;
+  firingControlSystems: Record<string, FCS>;
+  boosters: Record<string, Booster>;
+  backWeapons: Record<string, BackWeapon>;
+  armWeaponsL: Record<string, ArmWeaponL>;
+  armWeaponsR: Record<string, ArmWeaponR>;
+}
+
+
+export const parts: Parts = {
   "heads": {
     "HD-GRY-NX": {
       "name": "HD-GRY-NX",
@@ -171,8 +287,8 @@ export const parts = {
       "shellDefense": 530,
       "energyDefense": 505,
       "maximumWeight": 2770,
-      "anti-missileResponse": 48,
-      "anti-missileAngle": 48,
+      "antiMissileResponse": 48,
+      "antiMissileAngle": 48,
       "extensionSlots": 8,
       "unlock": "Starting Part"
     },
@@ -185,8 +301,8 @@ export const parts = {
       "shellDefense": 615,
       "energyDefense": 543,
       "maximumWeight": 3600,
-      "anti-missileResponse": 48,
-      "anti-missileAngle": 32,
+      "antiMissileResponse": 48,
+      "antiMissileAngle": 32,
       "extensionSlots": 12,
       "unlock": "Shop"
     },
@@ -199,8 +315,8 @@ export const parts = {
       "shellDefense": 492,
       "energyDefense": 610,
       "maximumWeight": 2450,
-      "anti-missileResponse": 48,
-      "anti-missileAngle": 64,
+      "antiMissileResponse": 48,
+      "antiMissileAngle": 64,
       "extensionSlots": 16,
       "unlock": "Shop"
     }
