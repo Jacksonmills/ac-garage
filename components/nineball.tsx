@@ -21,6 +21,7 @@ export default function Nineball() {
   const constraintsRef = React.useRef<HTMLDivElement>(null);
 
   const [terminalExpanded, setTerminalExpanded] = React.useState(false);
+  const [isMobile, setIsMobile] = React.useState(window.innerWidth < 768);
 
   function startDrag(event: React.PointerEvent<HTMLButtonElement>) {
     dragControls.start(event, { snapToCursor: false });
@@ -51,7 +52,12 @@ export default function Nineball() {
         dragControls={dragControls}
         dragListener={false}
         dragMomentum={false}
-        className="absolute bottom-4 right-4"
+        className="absolute"
+        style={
+          isMobile
+            ? { bottom: 0, left: 0, width: '100vw', maxHeight: '100vh' }
+            : { bottom: '4px', left: '4px' }
+        }
       >
         {showNineball && (
           <div className="p-2 bg-black w-fit relative">
@@ -68,24 +74,33 @@ export default function Nineball() {
                   {!terminalExpanded && <Expand />}
                 </Button>
               </div>
-              <Button
-                variant={`secondary`}
-                size="icon"
-                className="rounded-none cursor-grab"
-                onPointerDown={startDrag}
-              >
-                <GripVertical className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all" />
-                <span className="sr-only">Drag Nineball AI assistant</span>
-              </Button>
+              {!isMobile && (
+                <Button
+                  variant={`secondary`}
+                  size="icon"
+                  className="rounded-none cursor-grab"
+                  onPointerDown={startDrag}
+                >
+                  <GripVertical className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all" />
+                  <span className="sr-only">Drag Nineball AI assistant</span>
+                </Button>
+              )}
             </div>
             <div
-              className="pointer-events-auto flex flex-col bg-black text-green-500 xs:h-[50vh] xs:w-[90vw] overflow-y-scroll overflow-x-hidden gap-2 p-2 transition-opacity duration-200 ease-in-out"
-              style={{
-                minWidth: terminalExpanded ? '400px' : '200px',
-                maxWidth: terminalExpanded ? '600px' : '400px',
-                minHeight: terminalExpanded ? '200px' : '100px',
-                maxHeight: terminalExpanded ? '400px' : '200px',
-              }}
+              className="pointer-events-auto flex flex-col bg-black text-green-500 overflow-y-auto overflow-x-hidden gap-2 p-2 transition-opacity duration-200 ease-in-out"
+              style={
+                isMobile
+                  ? {
+                      height: terminalExpanded ? '100vh' : '50vh',
+                      width: '100vw',
+                    }
+                  : {
+                      minWidth: terminalExpanded ? '400px' : '200px',
+                      maxWidth: terminalExpanded ? '600px' : '400px',
+                      minHeight: terminalExpanded ? '200px' : '100px',
+                      maxHeight: terminalExpanded ? '400px' : '200px',
+                    }
+              }
               ref={elementRef}
             >
               {messages
