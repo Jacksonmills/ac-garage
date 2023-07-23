@@ -1,4 +1,4 @@
-import { ThemeProvider } from '@/components/theme-provider';
+import { Providers } from '@/components/providers';
 import './globals.css';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
@@ -17,14 +17,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <ClerkProvider>
-      <html lang="en" suppressHydrationWarning>
-        <body className={inter.className}>
-          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-            {children}
-          </ThemeProvider>
-        </body>
-      </html>
-    </ClerkProvider>
+    <html lang="en" suppressHydrationWarning>
+      <body className={inter.className}>
+        <ClerkProvider>
+          <Providers>{children}</Providers>
+        </ClerkProvider>
+      </body>
+    </html>
   );
 }
