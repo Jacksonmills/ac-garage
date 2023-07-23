@@ -41,7 +41,6 @@ export const head = mysqlTable(
     radarFunction: boolean("radar_function"),
     radarRange: int("radar_range"),
     unlock: varchar("unlock", { length: 256 }),
-    acquired: boolean("acquired"),
   },
 );
 
@@ -61,7 +60,6 @@ export const core = mysqlTable(
     antiMissileAngle: int("anti_missile_angle"),
     extensionSlots: int("extension_slots"),
     unlock: varchar("unlock", { length: 256 }),
-    acquired: boolean("acquired"),
   }
 );
 
@@ -85,7 +83,6 @@ export const arms = mysqlTable(
     maximumLock: int("maximum_lock"),
     reloadTime: int("reload_time"),
     unlock: varchar("unlock", { length: 256 }),
-    acquired: boolean("acquired"),
   }
 );
 
