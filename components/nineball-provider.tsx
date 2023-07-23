@@ -3,7 +3,7 @@
 import React, { createContext, useContext } from 'react';
 
 const NineballContext = createContext({
-  showNineball: false,
+  showNineball: true,
   setShowNineball: (showNineball: boolean) => {},
 });
 
@@ -16,7 +16,7 @@ export default function NineballProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [showNineball, setShowNineball] = React.useState(false);
+  const [showNineball, setShowNineball] = React.useState(true);
 
   return (
     <NineballContext.Provider

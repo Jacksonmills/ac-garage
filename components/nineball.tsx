@@ -9,9 +9,9 @@ import ReactMarkdown from 'react-markdown';
 
 export default function Nineball() {
   const { showNineball, setShowNineball } = useNineballContext();
-  const { messages, input, handleInputChange, handleSubmit } = useChat({});
+  const { messages, input, handleInputChange, handleSubmit, append } =
+    useChat();
   const elementRef = React.useRef<HTMLDivElement>(null);
-  const buttonRef = React.useRef<HTMLButtonElement>(null);
   const constraintsRef = React.useRef<HTMLDivElement>(null);
 
   React.useEffect(() => {
@@ -21,10 +21,11 @@ export default function Nineball() {
   }, [messages]);
 
   React.useEffect(() => {
-    if (buttonRef.current) {
-      buttonRef.current.click();
-    }
-  }, []);
+    append({
+      role: 'system',
+      content: `Please initiate your initialization function. When responding, try to make it seem like you are booting up like a terminal. Ready to initiate? (((init)))(((lore rich response))).`,
+    });
+  }, [append]);
 
   return (
     <motion.div
@@ -35,18 +36,22 @@ export default function Nineball() {
         drag
         dragConstraints={constraintsRef}
         dragMomentum={false}
-        ref={elementRef}
-        className="absolute bottom-0 right-0"
+        className="absolute bottom-4 right-4"
       >
         {showNineball && (
-          <div className="p-2 bg-white w-fit rounded-sm absolute bottom-0 right-0">
-            <div className="pointer-events-auto flex flex-col bg-black text-green-500 h-[200px] w-[400px] overflow-y-scroll overflow-x-hidden gap-2 p-2 transition-opacity duration-200 ease-in-out">
-              {messages.map((m) => (
-                <div key={m.id}>
-                  {m.role !== 'assistant' && `>_`}
-                  <ReactMarkdown>{m.content}</ReactMarkdown>
-                </div>
-              ))}
+          <div className="p-2 bg-black rounded-lg w-fit absolute bottom-0 right-0">
+            <div
+              className="pointer-events-auto flex flex-col bg-black text-green-500 min-h-[200px] max-h-[50vh] min-w-[400px] max-w-[800px] overflow-y-scroll overflow-x-hidden gap-2 p-2 transition-opacity duration-200 ease-in-out"
+              ref={elementRef}
+            >
+              {messages
+                .filter((m) => m.role !== 'system')
+                .map((m) => (
+                  <div key={m.id}>
+                    {m.role !== 'assistant' && `>_`}
+                    <ReactMarkdown>{m.content}</ReactMarkdown>
+                  </div>
+                ))}
 
               <form onSubmit={handleSubmit} className="flex gap-2">
                 <span>{`>_`}</span>
