@@ -17,7 +17,7 @@ const openai = new OpenAIApi(apiConfig);
 async function createEmbeddingForPart(part: any): Promise<number[]> {
   const result = await openai.createEmbedding({
     input: JSON.stringify(part),
-    model: process.env.OPENAI_MODEL!,
+    model: 'text-embedding-ada-002',
   });
 
   // make sure result is an array of numbers
@@ -25,6 +25,10 @@ async function createEmbeddingForPart(part: any): Promise<number[]> {
 }
 
 function cosineSimilarity(a: number[], b: number[]) {
+  if (!a || !b) {
+    return 0; // If either vector is not defined, return 0 to denote no similarity
+  }
+
   if (a.length !== b.length) {
     // Determine which is shorter
     let shorter = a.length < b.length ? a : b;
@@ -55,7 +59,7 @@ export async function POST(req: Request) {
   // create embedding
   const userResult = await openai.createEmbedding({
     input: nextMessages[0].content,
-    model: process.env.OPENAI_MODEL!,
+    model: 'text-embedding-ada-002',
   });
   const embedding = (userResult as unknown as { vector: number[]; }).vector;
 
