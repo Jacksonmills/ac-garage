@@ -28,7 +28,6 @@ export async function createUser(userId: string) {
     clerkId: userId,
   });
 
-  revalidatePath('/');
   return update;
 }
 
@@ -41,6 +40,5 @@ export async function createBuild(userId: string) {
     legs: 'legs-1',
   });
 
-  revalidatePath('/');
   return update;
 }

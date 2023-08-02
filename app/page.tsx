@@ -10,21 +10,66 @@ import {
 import Nineball from '@/components/nineball';
 import NineballToggle from '@/components/nineball-toggle';
 import { Button } from '@/components/ui/button';
-import { createBuild } from './actions';
+import { createBuild, createUser } from './actions';
+import { db } from '@/db';
+import { eq } from 'drizzle-orm';
+import { revalidatePath } from 'next/cache';
 
 // Optional, but recommended: run on the edge runtime.
 // See https://vercel.com/docs/concepts/functions/edge-functions
 export const runtime = 'edge';
 
+async function MyBuilds() {
+  const user = await currentUser();
+
+  const builds = user?.id
+    ? await db.query.build.findMany({
+        where: (b) => eq(b.user_id, user?.id),
+      })
+    : [];
+
+  return (
+    <div className="flex flex-col gap-2 text-center">
+      <div className="pb-4 text-2xl">BUILDS:</div>
+      {builds.map((b, idx) => (
+        <div key={b.id} className="flex justify-between">
+          <div className="flex gap-4">
+            <div>BUILD // {idx + 1}</div>
+            <div>
+              <span>{b.head}</span>
+              <span>{b.core}</span>
+              <span>{b.arms}</span>
+              <span>{b.legs}</span>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 export default async function Home() {
+  const user = await currentUser();
+
+  // create a user in db if there isnt already one with the current users id
+  if (user?.id) {
+    const existingUser = await db.query.user.findFirst({
+      where: (u) => eq(u.clerkId, user?.id),
+    });
+
+    if (!existingUser) {
+      createUser(user?.id);
+    }
+  }
+
   const handleSubmit = async () => {
     'use server';
-    const user = await currentUser();
-    if (!user) return;
-    console.log('user', user);
+    if (!user?.id) return;
+
     const userId = user?.id;
 
     createBuild(userId);
+    revalidatePath('/');
   };
 
   return (
@@ -71,6 +116,8 @@ export default async function Home() {
           <Button type="submit">Save</Button>
         </form>
       </div>
+
+      <MyBuilds />
 
       <Nineball />
     </main>
