@@ -7,22 +7,14 @@ import {
   UserButton,
   currentUser,
 } from '@clerk/nextjs';
-import { Configuration, OpenAIApi } from 'openai-edge';
 import Nineball from '@/components/nineball';
 import NineballToggle from '@/components/nineball-toggle';
-import { parts } from '@/db/parts';
 import { Button } from '@/components/ui/button';
 import { createBuild } from './actions';
 
 // Optional, but recommended: run on the edge runtime.
 // See https://vercel.com/docs/concepts/functions/edge-functions
 export const runtime = 'edge';
-
-const apiConfig = new Configuration({
-  apiKey: process.env.OPENAI_API_KEY!,
-});
-
-const openai = new OpenAIApi(apiConfig);
 
 export default async function Home() {
   const handleSubmit = async () => {
