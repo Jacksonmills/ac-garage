@@ -9,7 +9,7 @@ dotenv.config();
 // const connectionString = `mysql://${DATABASE_USERNAME}:${DATABASE_PASSWORD}@${DATABASE_HOST}/${DATABASE_NAME}?ssl={"rejectUnauthorized":true}`;
 
 export default {
-  schema: "./src/db/schema.ts",
+  schema: "./db/schema.ts",
   driver: "mysql2",
   dbCredentials: {
     connectionString: process.env.DATABASE_URL as string,

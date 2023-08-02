@@ -1,7 +1,7 @@
 'use server';
 
 import { db } from '@/db';
-import { user } from '@/db/schema';
+import { build, user } from '@/db/schema';
 import { revalidatePath } from 'next/cache';
 
 // export async function addRandomNumber() {
@@ -26,6 +26,19 @@ import { revalidatePath } from 'next/cache';
 export async function createUser(userId: string) {
   const update = await db.insert(user).values({
     clerkId: userId,
+  });
+
+  revalidatePath('/');
+  return update;
+}
+
+export async function createBuild(userId: string) {
+  const update = await db.insert(build).values({
+    user_id: userId,
+    head: 'head-1',
+    core: 'core-1',
+    arms: 'arms-1',
+    legs: 'legs-1',
   });
 
   revalidatePath('/');

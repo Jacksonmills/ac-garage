@@ -14,9 +14,6 @@ const apiConfig = new Configuration({
 
 const openai = new OpenAIApi(apiConfig);
 
-const getNextEmbedding = (embedding: any) => {
-};
-
 export async function POST(req: Request) {
   // Extract the `messages` from the body of the request
   const { messages: nextMessages } = await req.json();
@@ -27,7 +24,10 @@ export async function POST(req: Request) {
     model: process.env.OPENAI_MODEL!,
   });
 
-  const nextEmbedding = getNextEmbedding(embedding);
+  const partsEmbedding = await openai.createEmbedding({
+    input: JSON.stringify(parts),
+    model: process.env.OPENAI_MODEL!,
+  });
 
   // Request the OpenAI API for the response based on the prompt
   const response = await openai.createChatCompletion({

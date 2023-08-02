@@ -2,6 +2,15 @@ import Image from 'next/image';
 import React from 'react';
 
 // The build display displays all currently equipped items and their images in a grid that reflects the shape of a mech.
+interface Part {
+  name: string;
+  image: string;
+  recommended: string;
+  function: string;
+  price: number;
+  power: number;
+  ammo: number;
+}
 /* 
               .--------------.-----------------------------.-------.----------.
               | RECOMMENDED  | FUNCTION                    | PRICE | POWR/AMM |
@@ -20,21 +29,43 @@ import React from 'react';
 '-------------'--------------'-----------------------------'-------'----------'
 */
 
-export default function BuildDisplay() {
+interface BuildDisplayProps {
+  parts: Part[];
+}
+
+export default function BuildDisplay({ parts }: BuildDisplayProps) {
   return (
-    <div>
-      <div>
-        HEAD
-        <div>
-          {/* image of head part/placeholder image of wire frame head */}
-        </div>
-      </div>
-      <div>
-        CORE
-        <div>
-          {/* image of core part/placeholder image of wire frame core */}
-        </div>
-      </div>
-    </div>
+    // <div className="grid grid-cols-4 gap-4 p-4">
+    //   <div className="col-span-4">
+    //     <h2 className="text-xl font-bold">Mech Build</h2>
+    //   </div>
+    //   {parts.map((part, index) => (
+    //     <div key={index} className="flex flex-col items-center space-y-2">
+    //       <h3 className="font-semibold">{part.name}</h3>
+    //       <div className="w-16 h-16 bg-gray-200 rounded">
+    //         <Image src={part.image} alt={part.name} width={64} height={64} />
+    //       </div>
+    //       <div className="flex flex-col space-y-1">
+    //         <div>
+    //           RECOMMENDED:{' '}
+    //           <span className="font-semibold">{part.recommended}</span>
+    //         </div>
+    //         <div>
+    //           FUNCTION: <span className="font-semibold">{part.function}</span>
+    //         </div>
+    //         <div>
+    //           PRICE: <span className="font-semibold">{part.price}</span>
+    //         </div>
+    //         <div>
+    //           POWR/AMM:{' '}
+    //           <span className="font-semibold">
+    //             {part.power}/{part.ammo}
+    //           </span>
+    //         </div>
+    //       </div>
+    //     </div>
+    //   ))}
+    // </div>
+    <></>
   );
 }

@@ -10,6 +10,7 @@ import { Expand, GripVertical, Shrink } from 'lucide-react';
 import { Button } from './ui/button';
 import { initPrompt } from '@/lib/initPrompt';
 import { useUser } from '@clerk/nextjs';
+import { is } from 'drizzle-orm';
 
 export default function Nineball() {
   const { user } = useUser();
@@ -21,25 +22,43 @@ export default function Nineball() {
   const constraintsRef = React.useRef<HTMLDivElement>(null);
 
   const [terminalExpanded, setTerminalExpanded] = React.useState(false);
-  const [isMobile, setIsMobile] = React.useState(window.innerWidth < 768);
+  const [isMobile, setIsMobile] = React.useState(false);
+  const [nineBallInitPrompt, setNineBallInitPrompt] = React.useState('');
+  const [ravenPilotName, setRavenPilotName] = React.useState('Null');
+
+  const isDevelopment = process.env.NODE_ENV === 'development';
 
   function startDrag(event: React.PointerEvent<HTMLButtonElement>) {
     dragControls.start(event, { snapToCursor: false });
   }
 
   React.useEffect(() => {
-    console.log(messages);
     if (elementRef.current) {
       elementRef.current.scrollTop = elementRef.current.scrollHeight;
     }
   }, [messages]);
 
   React.useEffect(() => {
+    if (isDevelopment) return;
+
     append({
       role: 'system',
-      content: initPrompt,
+      content: nineBallInitPrompt,
     });
-  }, [append]);
+  }, [append, isDevelopment, nineBallInitPrompt]);
+
+  React.useEffect(() => {
+    if (!user) return;
+
+    setRavenPilotName(user?.username || user?.firstName || 'Null');
+  }, [user]);
+
+  React.useEffect(() => {
+    if (window) {
+      setIsMobile(window.innerWidth < 768);
+    }
+    setNineBallInitPrompt(`Hello, ${ravenPilotName}. ${initPrompt}`);
+  }, [ravenPilotName]);
 
   return (
     <motion.div
@@ -61,7 +80,7 @@ export default function Nineball() {
       >
         {showNineball && (
           <div className="p-2 bg-black w-fit relative">
-            <div className="bg-black/50 absolute top-0 left-0 p-2 pointer-events-auto w-full flex justify-between items-center">
+            <div className="bg-black/50 p-2 pointer-events-auto w-full flex justify-between items-center">
               <div className="flex gap-2">
                 <NineballToggle />
                 <Button
@@ -73,6 +92,20 @@ export default function Nineball() {
                   {terminalExpanded && <Shrink />}
                   {!terminalExpanded && <Expand />}
                 </Button>
+                {isDevelopment && (
+                  <Button
+                    variant={`outline`}
+                    className="rounded-none"
+                    onClick={() =>
+                      append({
+                        role: 'user',
+                        content: nineBallInitPrompt,
+                      })
+                    }
+                  >
+                    Start
+                  </Button>
+                )}
               </div>
               {!isMobile && (
                 <Button

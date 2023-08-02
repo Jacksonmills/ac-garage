@@ -1,11 +1,18 @@
 import { PartMenu } from '@/components/part-menu';
 import { ThemeToggle } from '@/components/theme-toggle';
-import { SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
+import {
+  SignInButton,
+  SignedIn,
+  SignedOut,
+  UserButton,
+  currentUser,
+} from '@clerk/nextjs';
 import { Configuration, OpenAIApi } from 'openai-edge';
 import Nineball from '@/components/nineball';
 import NineballToggle from '@/components/nineball-toggle';
 import { parts } from '@/db/parts';
 import { Button } from '@/components/ui/button';
+import { createBuild } from './actions';
 
 // Optional, but recommended: run on the edge runtime.
 // See https://vercel.com/docs/concepts/functions/edge-functions
@@ -18,6 +25,16 @@ const apiConfig = new Configuration({
 const openai = new OpenAIApi(apiConfig);
 
 export default async function Home() {
+  const handleSubmit = async () => {
+    'use server';
+    const user = await currentUser();
+    if (!user) return;
+    console.log('user', user);
+    const userId = user?.id;
+
+    createBuild(userId);
+  };
+
   return (
     <main className="flex min-h-screen flex-col gap-2 items-center justify-start p-2 md:p-12">
       <div className="flex items-center justify-between w-full">
@@ -32,9 +49,9 @@ export default async function Home() {
             <UserButton />
           </SignedIn>
           <SignedOut>
-            <Button variant="outline" className="rounded-none">
+            <span>
               <SignInButton />
-            </Button>
+            </span>
           </SignedOut>
           <NineballToggle />
           <ThemeToggle />
@@ -58,6 +75,9 @@ export default async function Home() {
           <PartMenu part="armWeaponsL" label="ARM WEAPON L" />
           <PartMenu part="armWeaponsR" label="ARM WEAPON R" />
         </div>
+        <form action={handleSubmit}>
+          <Button type="submit">Save</Button>
+        </form>
       </div>
 
       <Nineball />
