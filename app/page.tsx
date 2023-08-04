@@ -85,9 +85,7 @@ export default async function Home() {
             <UserButton />
           </SignedIn>
           <SignedOut>
-            <span>
-              <SignInButton />
-            </span>
+            <SignInButton />
           </SignedOut>
           <NineballToggle />
           <ThemeToggle />
