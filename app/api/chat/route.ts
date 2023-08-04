@@ -1,11 +1,8 @@
-// app/api/chat/route.ts
-
 import { Configuration, OpenAIApi } from 'openai-edge';
 import { OpenAIStream, StreamingTextResponse } from 'ai';
 import { parts } from '@/db/parts';
 
-// Optional, but recommended: run on the edge runtime.
-// See https://vercel.com/docs/concepts/functions/edge-functions
+
 export const runtime = 'edge';
 
 const apiConfig = new Configuration({
@@ -15,21 +12,8 @@ const apiConfig = new Configuration({
 const openai = new OpenAIApi(apiConfig);
 
 export async function POST(req: Request) {
-  // Extract the `messages` from the body of the request
   const { messages: nextMessages } = await req.json();
 
-  // create embedding
-  const embedding = await openai.createEmbedding({
-    input: nextMessages[0].content,
-    model: process.env.OPENAI_MODEL!,
-  });
-
-  const partsEmbedding = await openai.createEmbedding({
-    input: JSON.stringify(parts),
-    model: process.env.OPENAI_MODEL!,
-  });
-
-  // Request the OpenAI API for the response based on the prompt
   const response = await openai.createChatCompletion({
     model: process.env.OPENAI_MODEL!,
     stream: true,
@@ -44,9 +28,7 @@ export async function POST(req: Request) {
     ]
   });
 
-  // Convert the response into a friendly text-stream
   const stream = OpenAIStream(response);
 
-  // Respond with the stream
   return new StreamingTextResponse(stream);
 }

@@ -51,7 +51,6 @@ async function MyBuilds() {
 export default async function Home() {
   const user = await currentUser();
 
-  // create a user in db if there isnt already one with the current users id
   if (user?.id) {
     const existingUser = await db.query.user.findFirst({
       where: (u) => eq(u.clerkId, user?.id),
