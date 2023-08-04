@@ -1,6 +1,6 @@
 // app/api/chat/route.ts
 
-import { Configuration, OpenAIApi } from 'openai-edge';
+import { Configuration, CreateEmbeddingResponse, OpenAIApi } from 'openai-edge';
 import { OpenAIStream, StreamingTextResponse } from 'ai';
 import { parts } from '@/db/parts';
 
@@ -19,9 +19,8 @@ async function createEmbeddingForPart(part: any): Promise<number[]> {
     input: JSON.stringify(part),
     model: 'text-embedding-ada-002',
   });
-
-  // make sure result is an array of numbers
-  return (result as unknown as { vector: number[]; }).vector;
+  const response = result as unknown as CreateEmbeddingResponse;
+  return response.data as unknown as number[];
 }
 
 function cosineSimilarity(a: number[], b: number[]) {
@@ -61,7 +60,9 @@ export async function POST(req: Request) {
     input: nextMessages[0].content,
     model: 'text-embedding-ada-002',
   });
-  const embedding = (userResult as unknown as { vector: number[]; }).vector;
+  const userResponse = userResult as unknown as CreateEmbeddingResponse;
+  const userEmbedding = userResponse.data as unknown as number[];
+  console.log(userEmbedding);
 
   const headsArray = Object.values(parts.heads);
   const coresArray = Object.values(parts.cores);
@@ -72,7 +73,7 @@ export async function POST(req: Request) {
     const partEmbedding = await createEmbeddingForPart(part);
     similarityScores.push({
       part,
-      score: cosineSimilarity(embedding, partEmbedding)
+      score: cosineSimilarity(userEmbedding, partEmbedding)
     });
   }
 
