@@ -24,10 +24,6 @@ async function createEmbeddingForPart(part: any): Promise<number[]> {
 }
 
 function cosineSimilarity(a: number[], b: number[]) {
-  if (!a || !b) {
-    return 0; // If either vector is not defined, return 0 to denote no similarity
-  }
-
   if (a.length !== b.length) {
     // Determine which is shorter
     let shorter = a.length < b.length ? a : b;
@@ -62,7 +58,7 @@ export async function POST(req: Request) {
   });
   const userResponse = userResult as unknown as CreateEmbeddingResponse;
   const userEmbedding = userResponse.data as unknown as number[];
-  console.log(userEmbedding);
+  console.log('USER EMBEDDING: ', userEmbedding);
 
   const headsArray = Object.values(parts.heads);
   const coresArray = Object.values(parts.cores);
@@ -71,9 +67,10 @@ export async function POST(req: Request) {
   const similarityScores = [];
   for (let part of [...headsArray, ...coresArray, ...armsArray, ...legsArray]) {
     const partEmbedding = await createEmbeddingForPart(part);
+    console.log('PART EMBEDDING: ', partEmbedding);
     similarityScores.push({
       part,
-      score: cosineSimilarity(userEmbedding, partEmbedding)
+      score: cosineSimilarity(userEmbedding || [], partEmbedding || [])
     });
   }
 
