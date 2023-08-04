@@ -12,8 +12,10 @@ export default function BuildForm() {
       .then(() => {
         toast.success('Build created!');
       })
-      .catch((error) => {
-        toast.error(error.message);
+      .catch((e) => {
+        const errorMessage = e.message;
+        console.log(errorMessage);
+        toast.error('Slow down!');
       });
   };
 
