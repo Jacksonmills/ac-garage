@@ -14,6 +14,7 @@ import { createBuild, createUser } from './actions';
 import { db } from '@/db';
 import { eq } from 'drizzle-orm';
 import { revalidatePath } from 'next/cache';
+import { parts } from '@/db/parts';
 
 // Optional, but recommended: run on the edge runtime.
 // See https://vercel.com/docs/concepts/functions/edge-functions
@@ -51,7 +52,6 @@ async function MyBuilds() {
 export default async function Home() {
   const user = await currentUser();
 
-  // create a user in db if there isnt already one with the current users id
   if (user?.id) {
     const existingUser = await db.query.user.findFirst({
       where: (u) => eq(u.clerkId, user?.id),
