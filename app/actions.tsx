@@ -5,6 +5,7 @@ import { build, user } from '@/db/schema';
 import { currentUser } from '@clerk/nextjs';
 import { Ratelimit } from '@upstash/ratelimit';
 import { Redis } from '@upstash/redis';
+import { revalidatePath } from 'next/cache';
 
 // (3 requests per minute) TODO: add ui message
 const ratelimit = new Ratelimit({
@@ -40,7 +41,7 @@ export async function createUser(userId: string) {
   return update;
 }
 
-export async function createBuild(userId: string) {
+export async function createBuild() {
   const user = await currentUser();
   if (!user) throw new Error('Unauthorized');
 
@@ -48,12 +49,13 @@ export async function createBuild(userId: string) {
   if (!success) throw new Error('Rate limit exceeded');
 
   const update = await db.insert(build).values({
-    user_id: userId,
+    user_id: user?.id,
     head: 'head-1',
     core: 'core-1',
     arms: 'arms-1',
     legs: 'legs-1',
   });
 
+  revalidatePath('/');
   return update;
 }

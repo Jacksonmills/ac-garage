@@ -10,7 +10,6 @@ import { Expand, GripVertical, Shrink } from 'lucide-react';
 import { Button } from './ui/button';
 import { initPrompt } from '@/lib/initPrompt';
 import { useUser } from '@clerk/nextjs';
-import { is } from 'drizzle-orm';
 
 export default function Nineball() {
   const { user } = useUser();
@@ -63,7 +62,7 @@ export default function Nineball() {
   return (
     <motion.div
       ref={constraintsRef}
-      className="w-screen h-screen absolute top-0 left-0 overflow-hidden pointer-events-none"
+      className="w-full h-full absolute top-0 left-0 overflow-hidden pointer-events-none"
     >
       <motion.div
         drag
