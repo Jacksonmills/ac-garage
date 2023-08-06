@@ -62,7 +62,7 @@ export default function Nineball() {
   return (
     <motion.div
       ref={constraintsRef}
-      className="w-screen h-screen absolute top-0 left-0 overflow-hidden pointer-events-none"
+      className="w-full h-[100%] overflow-hidden absolute top-0 left-0 pointer-events-none"
     >
       <motion.div
         drag
