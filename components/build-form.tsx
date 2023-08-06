@@ -97,7 +97,7 @@ export default function BuildForm() {
             partType={data.partType}
             label={data.label}
             setSelectedPart={handleSelectPart}
-            selectedValue={build[data.partType]}
+            selectedValue={build[data.partType] || undefined}
           />
         ))}
       </div>
