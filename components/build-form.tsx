@@ -85,8 +85,6 @@ export default function BuildForm() {
     } else {
       setBuildComplete(false);
     }
-
-    console.log(build);
   }, [build]);
 
   return (
@@ -99,6 +97,7 @@ export default function BuildForm() {
             partType={data.partType}
             label={data.label}
             setSelectedPart={handleSelectPart}
+            selectedValue={build[data.partType]}
           />
         ))}
       </div>

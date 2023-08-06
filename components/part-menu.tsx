@@ -43,11 +43,13 @@ export function PartMenu({
   partType,
   label,
   setSelectedPart,
+  selectedValue,
 }: {
   part: string;
   partType: keyof BuildState;
   label: string;
   setSelectedPart: (part: keyof BuildState, value: string) => void;
+  selectedValue?: string;
 }) {
   const partsData = parts[part as keyof typeof parts];
 
@@ -60,7 +62,10 @@ export function PartMenu({
   );
 
   return (
-    <Select onValueChange={(value: string) => setSelectedPart(partType, value)}>
+    <Select
+      onValueChange={(value: string) => setSelectedPart(partType, value)}
+      value={selectedValue}
+    >
       <SelectTrigger className="w-full rounded-none">
         <SelectValue placeholder={label} />
       </SelectTrigger>

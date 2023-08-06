@@ -18,6 +18,8 @@ import { Button } from '@/components/ui/button';
 import { Trash } from 'lucide-react';
 import { build } from '@/db/schema';
 import { revalidatePath } from 'next/cache';
+import { BuildState, useBuild } from '@/components/build-provider';
+import LoadBuildButton from '@/components/load-build-button';
 
 // Optional, but recommended: run on the edge runtime.
 // See https://vercel.com/docs/concepts/functions/edge-functions
@@ -36,51 +38,67 @@ async function MyBuilds() {
     <div className="flex flex-col gap-2 text-center w-full">
       <div className="pb-4 text-2xl">BUILDS:</div>
       <ScrollArea className="h-[248px] w-full rounded-md border p-4">
-        {builds.map((b) => (
-          <div key={b.id} className="flex gap-4 rounded-md p-4 w-full">
-            <div>
-              BUILD // {b.id}
-              <form
-                action={async () => {
-                  'use server';
-                  await db.delete(build).where(eq(build.id, b.id));
-                  revalidatePath('/');
-                }}
-              >
-                <Button
-                  type="submit"
-                  variant={`outline`}
-                  size="icon"
-                  className="rounded-none"
+        {builds.map((b) => {
+          const fullBuild: BuildState = {
+            head: b.head!,
+            core: b.core!,
+            arms: b.arms!,
+            legs: b.legs!,
+            generator: b.generator!,
+            boosters: b.boosters!,
+            fcs: b.fcs!,
+            backWeaponL: b.backWeaponL!,
+            backWeaponR: b.backWeaponR!,
+            armWeaponL: b.armWeaponL!,
+            armWeaponR: b.armWeaponR!,
+          };
+
+          return (
+            <div key={b.id} className="flex gap-4 rounded-md p-4 w-full">
+              <div>
+                BUILD // {b.id}
+                <form
+                  action={async () => {
+                    'use server';
+                    await db.delete(build).where(eq(build.id, b.id));
+                    revalidatePath('/');
+                  }}
                 >
-                  <Trash />
-                </Button>
-              </form>
+                  <Button
+                    type="submit"
+                    variant={`outline`}
+                    size="icon"
+                    className="rounded-none"
+                  >
+                    <Trash />
+                  </Button>
+                </form>
+              </div>
+              <div className="flex">
+                <div>
+                  <span>{b.head}</span>
+                  <span>{b.core}</span>
+                  <span>{b.arms}</span>
+                  <span>{b.legs}</span>
+                </div>
+                <div>
+                  <span>{b.generator}</span>
+                  <span>{b.boosters}</span>
+                  <span>{b.fcs}</span>
+                </div>
+                <div>
+                  <span>{b.backWeaponL}</span>
+                  <span>{b.backWeaponR}</span>
+                </div>
+                <div>
+                  <span>{b.armWeaponL}</span>
+                  <span>{b.armWeaponR}</span>
+                </div>
+                <LoadBuildButton {...fullBuild} />
+              </div>
             </div>
-            <div className="flex">
-              <div>
-                <span>{b.head}</span>
-                <span>{b.core}</span>
-                <span>{b.arms}</span>
-                <span>{b.legs}</span>
-              </div>
-              <div>
-                <span>{b.generator}</span>
-                <span>{b.boosters}</span>
-                <span>{b.fcs}</span>
-              </div>
-              <div>
-                <span>{b.backWeaponL}</span>
-                <span>{b.backWeaponR}</span>
-              </div>
-              <div>
-                <span>{b.armWeaponL}</span>
-                <span>{b.armWeaponR}</span>
-              </div>
-              <Button>Load Build</Button>
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </ScrollArea>
     </div>
   );
