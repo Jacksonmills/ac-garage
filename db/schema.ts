@@ -148,7 +148,6 @@ export const build = mysqlTable(
   {
     id: serial("id").primaryKey(),
     user_id: varchar("user_id", { length: 256 }),
-
     head: varchar("head", { length: 256 }),
     core: varchar("core", { length: 256 }),
     arms: varchar("arms", { length: 256 }),
@@ -156,7 +155,7 @@ export const build = mysqlTable(
 
     generator: varchar("generator", { length: 256 }),
     fcs: varchar("fcs", { length: 256 }),
-    booster: varchar("booster", { length: 256 }),
+    boosters: varchar("boosters", { length: 256 }),
 
     backWeaponL: varchar("back_weapon_l", { length: 256 }),
     backWeaponR: varchar("back_weapon_r", { length: 256 }),

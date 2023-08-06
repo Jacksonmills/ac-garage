@@ -1,14 +1,64 @@
 'use client';
 
-import React from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { PartMenu } from './part-menu';
 import toast from 'react-hot-toast';
 import { createBuild } from '@/app/actions';
 import { Button } from './ui/button';
+import { parts } from '@/db/parts';
+import { BuildState, useBuild } from './build-provider';
+
+interface PartMenuData {
+  part: string;
+  partType: keyof BuildState;
+  label: string;
+}
+
+const partMenuData: PartMenuData[] = [
+  { part: 'heads', partType: 'head', label: 'HEAD' },
+  { part: 'cores', partType: 'core', label: 'CORE' },
+  { part: 'arms', partType: 'arms', label: 'ARMS' },
+  { part: 'legs', partType: 'legs', label: 'LEGS' },
+  { part: 'generators', partType: 'generator', label: 'GENERATOR' },
+  { part: 'boosters', partType: 'boosters', label: 'BOOSTERS' },
+  { part: 'firingControlSystems', partType: 'fcs', label: 'FCS' },
+  { part: 'backWeapons', partType: 'backWeaponL', label: 'BACK WEAPON L' },
+  { part: 'backWeapons', partType: 'backWeaponR', label: 'BACK WEAPON R' },
+  { part: 'armWeaponsL', partType: 'armWeaponL', label: 'ARM WEAPON L' },
+  { part: 'armWeaponsR', partType: 'armWeaponR', label: 'ARM WEAPON R' },
+];
 
 export default function BuildForm() {
+  const { state: build, dispatch } = useBuild();
+
+  const [buildComplete, setBuildComplete] = React.useState(false);
+
+  const handleSelectPart = useCallback(
+    (part: keyof BuildState, value: string) => {
+      dispatch({ type: 'SET_PART', part, value });
+    },
+    [dispatch]
+  );
+
   const handleSubmit = () => {
-    createBuild()
+    if (!buildComplete) {
+      toast.error('Build is not complete!');
+      return;
+    }
+
+    createBuild(
+      build.head,
+      build.core,
+      build.arms,
+      build.legs,
+      build.generator,
+      build.boosters,
+      build.fcs,
+      build.backWeaponL,
+      build.backWeaponR,
+      build.armWeaponL,
+      build.armWeaponR
+    )
       .then(() => {
         toast.success('Build created!');
       })
@@ -17,24 +67,40 @@ export default function BuildForm() {
       });
   };
 
+  useEffect(() => {
+    if (
+      build.head &&
+      build.core &&
+      build.arms &&
+      build.legs &&
+      build.generator &&
+      build.boosters &&
+      build.fcs &&
+      build.backWeaponL &&
+      build.backWeaponR &&
+      build.armWeaponL &&
+      build.armWeaponR
+    ) {
+      setBuildComplete(true);
+    } else {
+      setBuildComplete(false);
+    }
+
+    console.log(build);
+  }, [build]);
+
   return (
     <div className="w-full h-full gap-2 flex flex-col">
       <div className="flex flex-col gap-2 w-full p-2 border">
-        <PartMenu part="heads" label="HEAD" />
-        <PartMenu part="cores" label="CORE" />
-        <PartMenu part="arms" label="ARMS" />
-        <PartMenu part="legs" label="LEGS" />
-      </div>
-      <div className="flex gap-2 w-full p-2 border">
-        <PartMenu part="generators" label="GENERATOR" />
-        <PartMenu part="boosters" label="BOOSTERS" />
-        <PartMenu part="firingControlSystems" label="FCS" />
-      </div>
-      <div className="flex gap-2 w-full p-2 border">
-        <PartMenu part="backWeapons" label="BACK UNIT L" />
-        <PartMenu part="backWeapons" label="BACK UNIT R" />
-        <PartMenu part="armWeaponsL" label="ARM WEAPON L" />
-        <PartMenu part="armWeaponsR" label="ARM WEAPON R" />
+        {partMenuData.map((data) => (
+          <PartMenu
+            key={data.partType}
+            part={data.part}
+            partType={data.partType}
+            label={data.label}
+            setSelectedPart={handleSelectPart}
+          />
+        ))}
       </div>
       <form action={handleSubmit}>
         <Button type="submit">Save</Button>

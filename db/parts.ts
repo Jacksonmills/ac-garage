@@ -5,7 +5,7 @@ export interface BasePart {
   weight?: number;
 }
 
-interface BaseWeapon {
+export interface BaseWeapon {
   name: string;
   price: number;
   weight: number;
@@ -13,7 +13,7 @@ interface BaseWeapon {
   unlock: string;
 }
 
-interface BackWeapon extends BaseWeapon {
+export interface BackWeapon extends BaseWeapon {
   weaponLock: string;
   attackPower: string | number;
   numberOfAmmo: string | number;
@@ -24,12 +24,12 @@ interface BackWeapon extends BaseWeapon {
   reloadTime: number | string;
 }
 
-interface ArmWeaponL extends BaseWeapon {
+export interface ArmWeaponL extends BaseWeapon {
   chargeDrain: number;
   attackPower: number;
 }
 
-interface ArmWeaponR extends BaseWeapon {
+export interface ArmWeaponR extends BaseWeapon {
   weaponLock: string;
   attackPower: number;
   numberOfAmmo: number;
@@ -63,7 +63,7 @@ export interface Core extends BaseArmorPart {
   extensionSlots: number;
 }
 
-export interface Arm extends BaseArmorPart {
+export interface Arms extends BaseArmorPart {
   weaponLock: string;
   attackPower: string | number;
   numberOfAmmo: string | number;
@@ -74,7 +74,7 @@ export interface Arm extends BaseArmorPart {
   reloadTime: string | number;
 }
 
-export interface Leg extends BaseArmorPart {
+export interface Legs extends BaseArmorPart {
   legType: string;
   maximumWeight: number;
   speed: number;
@@ -94,7 +94,7 @@ export interface FCS extends BasePart {
   lockType: string;
 }
 
-export interface Booster extends BasePart {
+export interface Boosters extends BasePart {
   energyDrain: number;
   boostPower: number;
   chargeDrain: number;
@@ -103,11 +103,11 @@ export interface Booster extends BasePart {
 export interface Parts {
   heads: Record<string, Head>;
   cores: Record<string, Core>;
-  arms: Record<string, Arm>;
-  legs: Record<string, Leg>;
+  arms: Record<string, Arms>;
+  legs: Record<string, Legs>;
   generators: Record<string, Generator>;
   firingControlSystems: Record<string, FCS>;
-  boosters: Record<string, Booster>;
+  boosters: Record<string, Boosters>;
   backWeapons: Record<string, BackWeapon>;
   armWeaponsL: Record<string, ArmWeaponL>;
   armWeaponsR: Record<string, ArmWeaponR>;

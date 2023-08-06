@@ -14,6 +14,10 @@ import { db } from '@/db';
 import { eq } from 'drizzle-orm';
 import BuildForm from '@/components/build-form';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { Button } from '@/components/ui/button';
+import { Trash } from 'lucide-react';
+import { build } from '@/db/schema';
+import { revalidatePath } from 'next/cache';
 
 // Optional, but recommended: run on the edge runtime.
 // See https://vercel.com/docs/concepts/functions/edge-functions
@@ -29,19 +33,51 @@ async function MyBuilds() {
     : [];
 
   return (
-    <div className="flex flex-col gap-2 text-center">
+    <div className="flex flex-col gap-2 text-center w-full">
       <div className="pb-4 text-2xl">BUILDS:</div>
-      <ScrollArea className="h-[200px] w-[350px] rounded-md border p-4">
-        {builds.map((b, idx) => (
-          <div key={b.id} className="flex justify-between">
-            <div className="flex gap-4">
-              <div>BUILD // {idx + 1}</div>
+      <ScrollArea className="h-[248px] w-full rounded-md border p-4">
+        {builds.map((b) => (
+          <div key={b.id} className="flex gap-4 rounded-md p-4 w-full">
+            <div>
+              BUILD // {b.id}
+              <form
+                action={async () => {
+                  'use server';
+                  await db.delete(build).where(eq(build.id, b.id));
+                  revalidatePath('/');
+                }}
+              >
+                <Button
+                  type="submit"
+                  variant={`outline`}
+                  size="icon"
+                  className="rounded-none"
+                >
+                  <Trash />
+                </Button>
+              </form>
+            </div>
+            <div className="flex">
               <div>
                 <span>{b.head}</span>
                 <span>{b.core}</span>
                 <span>{b.arms}</span>
                 <span>{b.legs}</span>
               </div>
+              <div>
+                <span>{b.generator}</span>
+                <span>{b.boosters}</span>
+                <span>{b.fcs}</span>
+              </div>
+              <div>
+                <span>{b.backWeaponL}</span>
+                <span>{b.backWeaponR}</span>
+              </div>
+              <div>
+                <span>{b.armWeaponL}</span>
+                <span>{b.armWeaponR}</span>
+              </div>
+              <Button>Load Build</Button>
             </div>
           </div>
         ))}
@@ -59,7 +95,7 @@ export default async function Home() {
     });
 
     if (!existingUser) {
-      createUser(user?.id);
+      createUser();
     }
   }
 

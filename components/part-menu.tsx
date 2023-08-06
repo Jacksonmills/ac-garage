@@ -11,35 +11,56 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Head, Parts, parts } from '@/db/parts';
-import { Terminal } from 'lucide-react';
-import { Button } from './ui/button';
-import { useChat } from 'ai/react';
+import {
+  Head,
+  Core,
+  Arms,
+  Legs,
+  Generator,
+  Boosters,
+  FCS,
+  BackWeapon,
+  ArmWeaponL,
+  ArmWeaponR,
+  parts,
+} from '@/db/parts';
+import { BuildState } from './build-provider';
+
+type SpecificPart =
+  | Head
+  | Core
+  | Arms
+  | Legs
+  | Generator
+  | FCS
+  | Boosters
+  | BackWeapon
+  | ArmWeaponL
+  | ArmWeaponR;
 
 export function PartMenu({
   part,
+  partType,
   label,
+  setSelectedPart,
 }: {
-  part: keyof typeof parts;
+  part: string;
+  partType: keyof BuildState;
   label: string;
+  setSelectedPart: (part: keyof BuildState, value: string) => void;
 }) {
-  const { append } = useChat();
-  const [selectedParts, setSelectedParts] = React.useState<any>([]);
+  const partsData = parts[part as keyof typeof parts];
 
-  function appendChatWithPartInfo() {
-    append({
-      role: 'system',
-      content: 'test',
-    });
+  if (!partsData) {
+    console.log('no parts data for', part);
   }
 
-  React.useEffect(() => {
-    const arrayOfParts = Object.values(parts[part]) as Head[];
-    setSelectedParts(arrayOfParts);
-  }, [part]);
+  const [selectedParts] = React.useState<SpecificPart[]>(() =>
+    Object.values(partsData)
+  );
 
   return (
-    <Select>
+    <Select onValueChange={(value: string) => setSelectedPart(partType, value)}>
       <SelectTrigger className="w-full rounded-none">
         <SelectValue placeholder={label} />
       </SelectTrigger>
@@ -47,7 +68,7 @@ export function PartMenu({
         <SelectGroup>
           <SelectLabel className="sr-only">{part.toUpperCase()}</SelectLabel>
           <SelectItem value={`NO EQUIPMENT`}>NO EQUIPMENT</SelectItem>
-          {selectedParts.map((option: any) => (
+          {selectedParts.map((option: SpecificPart) => (
             <div
               key={option.name.toLowerCase()}
               className="flex justify-between"
@@ -58,15 +79,6 @@ export function PartMenu({
               >
                 {option.name.toUpperCase()}
               </SelectItem>
-
-              <Button
-                variant="ghost"
-                size="icon"
-                className="rounded-none"
-                onClick={appendChatWithPartInfo}
-              >
-                <Terminal />
-              </Button>
             </div>
           ))}
         </SelectGroup>
