@@ -74,7 +74,7 @@ export default function Nineball() {
         style={
           isMobile
             ? { bottom: 0, left: 0, width: '100vw', maxHeight: '100vh' }
-            : { bottom: '4px', left: '4px' }
+            : { bottom: '4px', right: '4px' }
         }
       >
         {showNineball && (
