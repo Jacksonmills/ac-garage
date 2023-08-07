@@ -10,12 +10,7 @@ export default function NineballToggle() {
 
   return (
     <div>
-      <Button
-        variant={`outline`}
-        size="icon"
-        className="rounded-none"
-        onClick={() => setShowNineball(!showNineball)}
-      >
+      <Button size="icon" onClick={() => setShowNineball(!showNineball)}>
         {!showNineball && (
           <Terminal className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all" />
         )}

@@ -114,6 +114,20 @@ export interface Parts {
 }
 
 
+
+export type SpecificPart =
+  | Head
+  | Core
+  | Arms
+  | Legs
+  | Generator
+  | FCS
+  | Boosters
+  | BackWeapon
+  | ArmWeaponL
+  | ArmWeaponR;
+
+
 export const parts: Parts = {
   "heads": {
     "HD-GRY-NX": {

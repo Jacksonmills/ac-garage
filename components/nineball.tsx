@@ -10,6 +10,7 @@ import { Expand, GripVertical, Shrink } from 'lucide-react';
 import { Button } from './ui/button';
 import { initPrompt } from '@/lib/initPrompt';
 import { useUser } from '@clerk/nextjs';
+import Image from 'next/image';
 
 export default function Nineball() {
   const { user } = useUser();
@@ -62,7 +63,7 @@ export default function Nineball() {
   return (
     <motion.div
       ref={constraintsRef}
-      className="w-full h-[100%] overflow-hidden absolute top-0 left-0 pointer-events-none"
+      className="w-full h-screen overflow-hidden absolute top-0 left-0 pointer-events-none"
     >
       <motion.div
         drag
@@ -83,9 +84,7 @@ export default function Nineball() {
               <div className="flex gap-2">
                 <NineballToggle />
                 <Button
-                  variant={`outline`}
                   size="icon"
-                  className="rounded-none"
                   onClick={() => setTerminalExpanded(!terminalExpanded)}
                 >
                   {terminalExpanded && <Shrink />}
@@ -94,7 +93,6 @@ export default function Nineball() {
                 {isDevelopment && (
                   <Button
                     variant={`outline`}
-                    className="rounded-none"
                     onClick={() =>
                       append({
                         role: 'user',
@@ -110,7 +108,7 @@ export default function Nineball() {
                 <Button
                   variant={`secondary`}
                   size="icon"
-                  className="rounded-none cursor-grab"
+                  className="cursor-grab"
                   onPointerDown={startDrag}
                 >
                   <GripVertical className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all" />
@@ -127,10 +125,10 @@ export default function Nineball() {
                       width: '100vw',
                     }
                   : {
-                      minWidth: terminalExpanded ? '400px' : '200px',
-                      maxWidth: terminalExpanded ? '600px' : '400px',
-                      minHeight: terminalExpanded ? '200px' : '100px',
-                      maxHeight: terminalExpanded ? '400px' : '200px',
+                      minWidth: terminalExpanded ? '800px' : '600px',
+                      maxWidth: terminalExpanded ? '1200px' : '800px',
+                      minHeight: terminalExpanded ? '600px' : '100px',
+                      maxHeight: terminalExpanded ? '800px' : '600px',
                     }
               }
               ref={elementRef}

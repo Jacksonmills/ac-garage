@@ -11,32 +11,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import {
-  Head,
-  Core,
-  Arms,
-  Legs,
-  Generator,
-  Boosters,
-  FCS,
-  BackWeapon,
-  ArmWeaponL,
-  ArmWeaponR,
-  parts,
-} from '@/db/parts';
+import { SpecificPart, parts } from '@/db/parts';
 import { BuildState } from './build-provider';
-
-type SpecificPart =
-  | Head
-  | Core
-  | Arms
-  | Legs
-  | Generator
-  | FCS
-  | Boosters
-  | BackWeapon
-  | ArmWeaponL
-  | ArmWeaponR;
 
 export function PartMenu({
   part,
@@ -66,10 +42,10 @@ export function PartMenu({
       onValueChange={(value: string) => setSelectedPart(partType, value)}
       value={selectedValue}
     >
-      <SelectTrigger className="w-full rounded-none">
+      <SelectTrigger className="w-full">
         <SelectValue placeholder={label} />
       </SelectTrigger>
-      <SelectContent className="rounded-none">
+      <SelectContent>
         <SelectGroup>
           <SelectLabel className="sr-only">{part.toUpperCase()}</SelectLabel>
           <SelectItem value={`NO EQUIPMENT`}>NO EQUIPMENT</SelectItem>
@@ -78,10 +54,7 @@ export function PartMenu({
               key={option.name.toLowerCase()}
               className="flex justify-between"
             >
-              <SelectItem
-                className="rounded-none"
-                value={option.name.toLowerCase()}
-              >
+              <SelectItem value={option.name.toLowerCase()}>
                 {option.name.toUpperCase()}
               </SelectItem>
             </div>

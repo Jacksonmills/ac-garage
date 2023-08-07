@@ -109,21 +109,22 @@ export default function BuildForm() {
   }, [build]);
 
   return (
-    <div className="w-full h-full gap-2 flex flex-col">
-      <div className="flex flex-col gap-2 w-full p-2 border">
-        {partMenuData.map((data) => (
-          <PartMenu
-            key={data.partType}
-            part={data.part}
-            partType={data.partType}
-            label={data.label}
-            setSelectedPart={handleSelectPart}
-            selectedValue={build[data.partType] || undefined}
-          />
-        ))}
-      </div>
+    <div className="flex flex-col gap-2 w-full min-w-[50vw] p-2 border h-[80vh] justify-between">
+      {partMenuData.map((data) => (
+        <PartMenu
+          key={data.partType}
+          part={data.part}
+          partType={data.partType}
+          label={data.label}
+          setSelectedPart={handleSelectPart}
+          selectedValue={build[data.partType] || undefined}
+        />
+      ))}
+
       <form action={handleSubmit}>
-        <Button type="submit">Save</Button>
+        <Button className="w-full" type="submit">
+          Create Build
+        </Button>
       </form>
     </div>
   );
