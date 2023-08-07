@@ -40,9 +40,30 @@ export default function BuildForm() {
     [dispatch]
   );
 
+  const handleIsNotCompleteMessage = (build: BuildState) => {
+    const missingParts = Object.keys(build).filter(
+      (part) => build[part as keyof BuildState] === ''
+    );
+    if (missingParts.length > 0) {
+      let missingPartsString = '';
+
+      if (missingParts.length > 1) {
+        const allButLastPart = missingParts.slice(0, -1);
+        const lastPart = missingParts.slice(-1);
+        missingPartsString = `${allButLastPart.join(', ')} and ${lastPart}`;
+      } else {
+        missingPartsString = missingParts[0];
+      }
+
+      toast.error(
+        `Build is not complete! Please select: ${missingPartsString}.`
+      );
+    }
+  };
+
   const handleSubmit = () => {
     if (!buildComplete) {
-      toast.error('Build is not complete!');
+      handleIsNotCompleteMessage(build);
       return;
     }
 
