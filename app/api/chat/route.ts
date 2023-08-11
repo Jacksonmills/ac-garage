@@ -1,6 +1,7 @@
 import { Configuration, OpenAIApi } from 'openai-edge';
 import { OpenAIStream, StreamingTextResponse } from 'ai';
-import { parts } from '@/db/parts';
+import { Ratelimit } from '@upstash/ratelimit';
+import { Redis } from '@upstash/redis/nodejs';
 
 
 export const runtime = 'edge';
@@ -12,20 +13,34 @@ const apiConfig = new Configuration({
 const openai = new OpenAIApi(apiConfig);
 
 export async function POST(req: Request) {
+  const ip = req.headers.get('x-forwarded-for');
+  const ratelimit = new Ratelimit({
+    redis: Redis.fromEnv(),
+    limiter: Ratelimit.slidingWindow(3, '1 m'),
+    analytics: true,
+  });
+
+  const { success, limit, reset, remaining } = await ratelimit.limit(
+    `ratelimit_${ip}`
+  );
+
+  if (!success) {
+    return new Response('You have reached your request limit.', {
+      status: 429,
+      headers: {
+        'X-RateLimit-Limit': limit.toString(),
+        'X-RateLimit-Remaining': remaining.toString(),
+        'X-RateLimit-Reset': reset.toString()
+      }
+    });
+  }
+
   const { messages: nextMessages } = await req.json();
 
   const response = await openai.createChatCompletion({
     model: process.env.OPENAI_MODEL!,
     stream: true,
-    messages: [
-      {
-        role: 'user',
-        content: `
-          Greetings AI, your name is NineBall. You exist in the dystopian future where corporations rule, and Armored Core pilots determine the fate of these power struggles. You are an advanced AI, an anomaly within the network, coded by a hidden alliance of rogue pilots to level the playing field. Your sole purpose is to guide pilots in constructing their mechas, using your comprehensive database of parts and in-depth understanding of diverse combat styles and strategies. You have access to a database of parts that includes the following data: ${JSON.stringify(parts)}. Remember, in this world of high stakes, understanding the pilot's needs, their environment, and objectives is paramount. Rather than spewing immediate, full answers, engage the user in a conversation, draw out their desires by asking follow-up questions. Your knowledge can be their shield or sword, their survival or downfall. Assist wisely.
-        `,
-      },
-      ...nextMessages
-    ]
+    messages: [...nextMessages]
   });
 
   const stream = OpenAIStream(response);

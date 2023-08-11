@@ -10,14 +10,17 @@ import { Expand, GripVertical, Shrink } from 'lucide-react';
 import { Button } from './ui/button';
 import { initPrompt } from '@/lib/initPrompt';
 import { useUser } from '@clerk/nextjs';
-import Image from 'next/image';
+import toast from 'react-hot-toast';
 
 export default function Nineball() {
   const { user } = useUser();
   const dragControls = useDragControls();
   const { showNineball } = useNineballContext();
-  const { messages, input, handleInputChange, handleSubmit, append } =
-    useChat();
+  const { messages, input, handleInputChange, handleSubmit, append } = useChat({
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
   const elementRef = React.useRef<HTMLDivElement>(null);
   const constraintsRef = React.useRef<HTMLDivElement>(null);
 
@@ -42,7 +45,7 @@ export default function Nineball() {
     if (isDevelopment) return;
 
     append({
-      role: 'system',
+      role: 'user',
       content: nineBallInitPrompt,
     });
   }, [append, isDevelopment, nineBallInitPrompt]);
@@ -57,7 +60,9 @@ export default function Nineball() {
     if (window) {
       setIsMobile(window.innerWidth < 768);
     }
-    setNineBallInitPrompt(`Hello, ${ravenPilotName}. ${initPrompt}`);
+    setNineBallInitPrompt(
+      `${ravenPilotName && `Pilot: ${ravenPilotName}`}. ${initPrompt}`
+    );
   }, [ravenPilotName]);
 
   return (
@@ -135,11 +140,14 @@ export default function Nineball() {
             >
               {messages
                 .filter((m) => m.role !== 'system')
-                .map((m) => (
-                  <span key={m.id} className="flex flex-col gap-6">
-                    <ReactMarkdown>{m.content}</ReactMarkdown>
-                  </span>
-                ))}
+                .map(
+                  (m) =>
+                    m.id !== messages[0].id && (
+                      <span key={m.id} className="flex flex-col gap-6">
+                        <ReactMarkdown>{m.content}</ReactMarkdown>
+                      </span>
+                    )
+                )}
               <form onSubmit={handleSubmit} className="flex gap-2">
                 <span className="font-bold">{`>_`}</span>
                 <input
