@@ -6,7 +6,7 @@ import { BuildState, useBuild } from './build-provider';
 import toast from 'react-hot-toast';
 
 export default function LoadBuildButton(fullBuild: BuildState) {
-  const { state: build, dispatch } = useBuild();
+  const { dispatch } = useBuild();
 
   const loadFullBuild = useCallback(
     (fullBuild: BuildState) => {

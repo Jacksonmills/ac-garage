@@ -5,7 +5,6 @@ import { PartMenu } from './part-menu';
 import toast from 'react-hot-toast';
 import { createBuild } from '@/app/actions';
 import { Button } from './ui/button';
-import { parts } from '@/db/parts';
 import { BuildState, useBuild } from './build-provider';
 
 interface PartMenuData {
