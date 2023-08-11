@@ -24,7 +24,7 @@ export function PartMenu({
   part: string;
   partType: keyof BuildState;
   label: string;
-  setSelectedPart: (part: keyof BuildState, value: string) => void;
+  setSelectedPart: (_part: keyof BuildState, _value: string) => void;
   selectedValue?: string;
 }) {
   const partsData = parts[part as keyof typeof parts];

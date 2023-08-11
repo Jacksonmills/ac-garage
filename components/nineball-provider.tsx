@@ -4,7 +4,7 @@ import React, { createContext, useContext } from 'react';
 
 const NineballContext = createContext({
   showNineball: true,
-  setShowNineball: (showNineball: boolean) => {},
+  setShowNineball: (_showNineball: boolean) => {},
 });
 
 export function useNineballContext() {
