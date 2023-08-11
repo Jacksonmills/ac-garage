@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import React from 'react';
 
 // The build display displays all currently equipped items and their images in a grid that reflects the shape of a mech.
@@ -13,7 +12,7 @@ interface Part {
 }
 /* 
               .--------------.-----------------------------.-------.----------.
-              | RECOMMENDED  | FUNCTION                    | PRICE | POWR/AMM |
+              | RECOMMENDED  | FUNCTION                    | PRICE | POWER/AMM |
 .-------------+--------------+-----------------------------+-------+----------|
 | HEAD        | HD-GRY-NX    | Has no optional equipment   | 14700 | -------- |
 | CORE        | XCA-00       | Standard core unit          | 61500 | -------- |
@@ -25,7 +24,7 @@ interface Part {
 | B. WEAPON L | WM-S40/1     | Fires single missiles       | 18700 |   830/40 |
 | B. WEAPON R | RXA-01WE     | Old-style radar antenna     | 12100 | -------- |
 | A. WEAPON L | LS-2001      | Standard portable rifle     | 11400 |  218/200 |
-| A. WEAPON R | WG-RF35      | Infinite-use laserblade     | 11500 |  738/--- |
+| A. WEAPON R | WG-RF35      | Infinite-use laser blade     | 11500 |  738/--- |
 '-------------'--------------'-----------------------------'-------'----------'
 */
 
@@ -33,7 +32,7 @@ interface BuildDisplayProps {
   parts: Part[];
 }
 
-export default function BuildDisplay({ parts }: BuildDisplayProps) {
+export default function BuildDisplay({}: BuildDisplayProps) {
   return (
     // <div className="grid grid-cols-4 gap-4 p-4">
     //   <div className="col-span-4">
@@ -57,7 +56,7 @@ export default function BuildDisplay({ parts }: BuildDisplayProps) {
     //           PRICE: <span className="font-semibold">{part.price}</span>
     //         </div>
     //         <div>
-    //           POWR/AMM:{' '}
+    //           POWER/AMM:{' '}
     //           <span className="font-semibold">
     //             {part.power}/{part.ammo}
     //           </span>

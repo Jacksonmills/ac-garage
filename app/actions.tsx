@@ -1,38 +1,17 @@
 'use server';
 
 import { db } from '@/db';
-import { parts } from '@/db/parts';
 import { build, user } from '@/db/schema';
 import { auth } from '@clerk/nextjs';
 import { Ratelimit } from '@upstash/ratelimit';
 import { Redis } from '@upstash/redis';
 import { revalidatePath } from 'next/cache';
 
-// (3 requests per minute) TODO: add ui message
 const ratelimit = new Ratelimit({
   redis: Redis.fromEnv(),
   limiter: Ratelimit.slidingWindow(3, '1 m'),
   analytics: true,
 });
-
-// export async function addRandomNumber() {
-//   const update = await db
-//     .insert(randomNumber)
-//     .values({ number: Math.floor(Math.random() * 100000).toString() });
-
-//   revalidatePath('/');
-//   return update;
-// }
-
-// export async function addPost(userId: string, content: string) {
-//   const update = await db.insert(post).values({
-//     user_id: userId,
-//     content,
-//   });
-
-//   revalidatePath('/');
-//   return update;
-// }
 
 export async function createUser() {
   const { userId } = auth();
