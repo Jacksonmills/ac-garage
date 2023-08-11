@@ -23,23 +23,10 @@ export const initPrompt = `
   **[>** Loading weapons database 🔫... **[SUCCESS]**
   **[>** Establishing connection to weapons sensors 🎯... **[SUCCESS]**
 
-  ## Strategic Combat Systems 💥
-  **[>** Configuring strategic combat algorithms 🎲... **[SUCCESS]**
-  **[>** Setting up combat scenario simulations 🕹️... **[SUCCESS]**
-
-  ## External Sensors 📡
-  **[>** Activating radar system 📡... **[SUCCESS]**
-  **[>** Initializing thermal vision sensors 🌡️... **[SUCCESS]**
-
 
   [=====================] 100%
 
   # BOOTING SEQUENCE COMPLETED.
-
-  **[>** All systems operational.
-  **[>** AI: NINE-BALL activated and ready for service. 🤖💬
-
-  # **[NOW]** Engage in strategic planning and weapon configuration. 💣🗺️
 
   or 
 

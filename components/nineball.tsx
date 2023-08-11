@@ -9,11 +9,9 @@ import NineballToggle from './nineball-toggle';
 import { Expand, GripVertical, Shrink } from 'lucide-react';
 import { Button } from './ui/button';
 import { initPrompt } from '@/lib/initPrompt';
-import { useUser } from '@clerk/nextjs';
 import toast from 'react-hot-toast';
 
 export default function Nineball() {
-  const { user } = useUser();
   const dragControls = useDragControls();
   const { showNineball } = useNineballContext();
   const { messages, input, handleInputChange, handleSubmit, append } = useChat({
@@ -26,8 +24,6 @@ export default function Nineball() {
 
   const [terminalExpanded, setTerminalExpanded] = React.useState(false);
   const [isMobile, setIsMobile] = React.useState(false);
-  const [nineBallInitPrompt, setNineBallInitPrompt] = React.useState('');
-  const [ravenPilotName, setRavenPilotName] = React.useState('Null');
 
   const isDevelopment = process.env.NODE_ENV === 'development';
 
@@ -46,24 +42,15 @@ export default function Nineball() {
 
     append({
       role: 'user',
-      content: nineBallInitPrompt,
+      content: initPrompt,
     });
-  }, [append, isDevelopment, nineBallInitPrompt]);
-
-  React.useEffect(() => {
-    if (!user) return;
-
-    setRavenPilotName(user?.username || user?.firstName || 'Null');
-  }, [user]);
+  }, [append, isDevelopment]);
 
   React.useEffect(() => {
     if (window) {
       setIsMobile(window.innerWidth < 768);
     }
-    setNineBallInitPrompt(
-      `${ravenPilotName && `Pilot: ${ravenPilotName}`}. ${initPrompt}`
-    );
-  }, [ravenPilotName]);
+  }, []);
 
   return (
     <motion.div
@@ -101,7 +88,7 @@ export default function Nineball() {
                     onClick={() =>
                       append({
                         role: 'user',
-                        content: nineBallInitPrompt,
+                        content: initPrompt,
                       })
                     }
                   >
