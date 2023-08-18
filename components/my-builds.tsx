@@ -44,41 +44,95 @@ export async function MyBuilds() {
             };
 
             return (
-              <div key={b.id} className="flex gap-4 rounded-md p-4 w-full">
-                <div>
-                  BUILD // {b.id}
-                  <form
-                    action={async () => {
-                      'use server';
-                      await db.delete(build).where(eq(build.id, b.id));
-                      revalidatePath('/');
-                    }}
-                  >
-                    <Button type="submit" size="icon">
-                      <Trash />
-                    </Button>
-                  </form>
-                  <LoadBuildButton {...fullBuild} />
+              <div
+                key={b.id}
+                className="flex flex-col gap-4 rounded-md p-4 w-full"
+              >
+                <div className="flex items-center">
+                  <h2 className="mr-auto">BUILD // {b.id}</h2>
+                  <div className="flex gap-2">
+                    <form
+                      action={async () => {
+                        'use server';
+                        await db.delete(build).where(eq(build.id, b.id));
+                        revalidatePath('/');
+                      }}
+                    >
+                      <Button type="submit" size="icon" variant={`destructive`}>
+                        <Trash />
+                      </Button>
+                    </form>
+                    <LoadBuildButton {...fullBuild} />
+                  </div>
                 </div>
-                <div className="flex">
+                <div className="flex flex-col">
                   <div className="flex flex-col items-start gap-2">
-                    <span>HEAD: {b.head}</span>
-                    <span>CORE: {b.core}</span>
-                    <span>ARMS: {b.arms}</span>
-                    <span>LEGS: {b.legs}</span>
-                  </div>
-                  <div className="flex flex-col items-start gap-2">
-                    <span>GENERATOR: {b.generator}</span>
-                    <span>BOOSTERS: {b.boosters}</span>
-                    <span>FCS: {b.fcs}</span>
-                  </div>
-                  <div className="flex flex-col items-start gap-2">
-                    <span>BACK WEAPON L: {b.backWeaponL}</span>
-                    <span>BACK WEAPON R: {b.backWeaponR}</span>
-                  </div>
-                  <div className="flex flex-col items-start gap-2">
-                    <span>ARM WEAPON L: {b.armWeaponL}</span>
-                    <span>ARM WEAPON R: {b.armWeaponR}</span>
+                    <span className="flex gap-2 w-full items-center">
+                      HEAD:{' '}
+                      <span className="uppercase font-bold p-2 border flex grow items-center justify-center">
+                        {b.head}
+                      </span>
+                    </span>
+                    <span className="flex items-center gap-2 w-full">
+                      CORE:{' '}
+                      <span className="uppercase font-bold p-2 border flex grow items-center justify-center">
+                        {b.core}
+                      </span>
+                    </span>
+                    <span className="flex items-center gap-2 w-full">
+                      ARMS:{' '}
+                      <span className="uppercase font-bold p-2 border flex grow items-center justify-center">
+                        {b.arms}
+                      </span>
+                    </span>
+                    <span className="flex items-center gap-2 w-full">
+                      LEGS:{' '}
+                      <span className="uppercase font-bold p-2 border flex grow items-center justify-center">
+                        {b.legs}
+                      </span>
+                    </span>
+                    <span className="flex items-center gap-2 w-full">
+                      GENERATOR:{' '}
+                      <span className="uppercase font-bold p-2 border flex grow items-center justify-center">
+                        {b.generator}
+                      </span>
+                    </span>
+                    <span className="flex items-center gap-2 w-full">
+                      BOOSTERS:{' '}
+                      <span className="uppercase font-bold p-2 border flex grow items-center justify-center">
+                        {b.boosters}
+                      </span>
+                    </span>
+                    <span className="flex items-center gap-2 w-full">
+                      FCS:{' '}
+                      <span className="uppercase font-bold p-2 border flex grow items-center justify-center">
+                        {b.fcs}
+                      </span>
+                    </span>
+                    <span className="flex items-center gap-2 w-full">
+                      BACK WEAPON L:{' '}
+                      <span className="uppercase font-bold p-2 border flex grow items-center justify-center">
+                        {b.backWeaponL}
+                      </span>
+                    </span>
+                    <span className="flex items-center gap-2 w-full">
+                      BACK WEAPON R:{' '}
+                      <span className="uppercase font-bold p-2 border flex grow items-center justify-center">
+                        {b.backWeaponR}
+                      </span>
+                    </span>
+                    <span className="flex items-center gap-2 w-full">
+                      ARM WEAPON L:{' '}
+                      <span className="uppercase font-bold p-2 border flex grow items-center justify-center">
+                        {b.armWeaponL}
+                      </span>
+                    </span>
+                    <span className="flex items-center gap-2 w-full">
+                      ARM WEAPON R:{' '}
+                      <span className="uppercase font-bold p-2 border flex grow items-center justify-center">
+                        {b.armWeaponR}
+                      </span>
+                    </span>
                   </div>
                 </div>
               </div>

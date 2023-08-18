@@ -30,9 +30,12 @@ interface Part {
 
 interface BuildDisplayProps {
   parts: Part[];
+  getNextParts: (_parts: Part[]) => void;
 }
 
-export default function BuildDisplay({}: BuildDisplayProps) {
+export default function BuildDisplay({ parts }: BuildDisplayProps) {
+  const nextParts = [...parts];
+  console.log(nextParts);
   return (
     // <div className="grid grid-cols-4 gap-4 p-4">
     //   <div className="col-span-4">

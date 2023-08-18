@@ -55,7 +55,7 @@ export default async function Home() {
           <ThemeToggle />
         </div>
       </div>
-      <div className="flex gap-2">
+      <div className="flex gap-2 w-full lg:flex-row flex-col">
         <BuildForm />
         <MyBuilds />
       </div>
