@@ -8,19 +8,25 @@ import { build } from '@/db/schema';
 import { eq } from 'drizzle-orm';
 import { revalidatePath } from 'next/cache';
 import { BuildState } from './build-provider';
+import BuildList from './build-list';
+
+function getBuilds(userId: string) {
+  return db.query.build.findMany({
+    where: (b) => eq(b.user_id, userId),
+  });
+}
+
+export type ReturnedBuilds = Awaited<ReturnType<typeof getBuilds>>;
 
 export async function MyBuilds() {
   const user = await currentUser();
 
-  const builds = user?.id
-    ? await db.query.build.findMany({
-        where: (b) => eq(b.user_id, user?.id),
-      })
-    : [];
+  const builds = user?.id ? await getBuilds(user.id) : [];
 
   return (
     <div className="flex flex-col gap-2 text-center w-full">
       <ScrollArea className="w-full h-[80vh] rounded-md border p-4">
+        {builds.length > 0 && <BuildList builds={builds} />}
         {builds.length <= 0 && (
           <div className="flex flex-col items-center justify-center h-full">
             <span className="text-2xl">No builds saved</span>
