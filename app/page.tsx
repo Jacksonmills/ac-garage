@@ -1,11 +1,5 @@
 import { ThemeToggle } from '@/components/theme-toggle';
-import {
-  SignInButton,
-  SignedIn,
-  SignedOut,
-  UserButton,
-  currentUser,
-} from '@clerk/nextjs';
+import { SignInButton, UserButton, currentUser } from '@clerk/nextjs';
 import Nineball from '@/components/nineball';
 import NineballToggle from '@/components/nineball-toggle';
 import { createUser } from './actions';
@@ -45,12 +39,8 @@ export default async function Home() {
           </span>
         </div>
         <div className="flex items-center gap-2">
-          <SignedIn>
-            <UserButton />
-          </SignedIn>
-          <SignedOut>
-            <SignInButton />
-          </SignedOut>
+          {!user && <SignInButton />}
+          {user && <UserButton />}
           <NineballToggle />
           <ThemeToggle />
         </div>

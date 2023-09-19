@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { ReturnedBuilds } from './my-builds';
+import type { ReturnedBuilds } from './my-builds';
 
 export default function BuildList({ builds }: { builds: ReturnedBuilds }) {
   if (!builds) return null;
