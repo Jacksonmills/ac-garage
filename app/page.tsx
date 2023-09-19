@@ -10,7 +10,7 @@ import BuildForm from '@/components/build-form';
 import { MyBuilds } from '@/components/my-builds';
 import Image from 'next/image';
 
-// Optional, but recommended: run on the edge runtime.
+// Optional, but recommended: run on the edge runtime
 // See https://vercel.com/docs/concepts/functions/edge-functions
 export const runtime = 'edge';
 
