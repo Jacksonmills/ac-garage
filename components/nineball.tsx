@@ -10,6 +10,7 @@ import { Expand, GripVertical, Shrink } from 'lucide-react';
 import { Button } from './ui/button';
 import { initPrompt } from '@/lib/initPrompt';
 import toast from 'react-hot-toast';
+import { isDevelopment } from '@/utils';
 
 export default function Nineball() {
   const dragControls = useDragControls();
@@ -25,8 +26,6 @@ export default function Nineball() {
   const [terminalExpanded, setTerminalExpanded] = React.useState(false);
   const [isMobile, setIsMobile] = React.useState(false);
 
-  const isDevelopment = process.env.NODE_ENV === 'development';
-
   function startDrag(event: React.PointerEvent<HTMLButtonElement>) {
     dragControls.start(event, { snapToCursor: false });
   }
@@ -38,13 +37,13 @@ export default function Nineball() {
   }, [messages]);
 
   React.useEffect(() => {
-    if (isDevelopment) return;
-
-    append({
-      role: 'user',
-      content: initPrompt,
-    });
-  }, [append, isDevelopment]);
+    if (isDevelopment) {
+      append({
+        role: 'user',
+        content: initPrompt,
+      });
+    }
+  }, [append]);
 
   React.useEffect(() => {
     if (window) {
