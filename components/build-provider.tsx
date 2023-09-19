@@ -1,4 +1,9 @@
-import React, { createContext, useContext, useReducer, Dispatch } from 'react';
+import React, {
+  createContext,
+  useContext,
+  useReducer,
+  type Dispatch,
+} from 'react';
 
 // Define the state shape
 export interface BuildState {
