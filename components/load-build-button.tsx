@@ -2,7 +2,7 @@
 
 import React, { useCallback } from 'react';
 import { Button } from './ui/button';
-import { BuildState, useBuild } from './build-provider';
+import { type BuildState, useBuild } from './build-provider';
 import toast from 'react-hot-toast';
 import useWindow from '@/hooks/use-window';
 import { Save } from 'lucide-react';

@@ -5,7 +5,7 @@ import { PartMenu } from './part-menu';
 import toast from 'react-hot-toast';
 import { createBuild } from '@/app/actions';
 import { Button } from './ui/button';
-import { BuildState, useBuild } from './build-provider';
+import { type BuildState, useBuild } from './build-provider';
 import { ScrollArea } from './ui/scroll-area';
 
 interface PartMenuData {

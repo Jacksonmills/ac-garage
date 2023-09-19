@@ -11,8 +11,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { SpecificPart, parts } from '@/db/parts';
-import { BuildState } from './build-provider';
+import { type SpecificPart, parts } from '@/db/parts';
+import type { BuildState } from './build-provider';
 
 export function PartMenu({
   part,

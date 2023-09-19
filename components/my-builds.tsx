@@ -7,7 +7,7 @@ import { db } from '@/db';
 import { build } from '@/db/schema';
 import { eq } from 'drizzle-orm';
 import { revalidatePath } from 'next/cache';
-import { BuildState } from './build-provider';
+import type { BuildState } from './build-provider';
 import BuildList from './build-list';
 
 function getBuilds(userId: string) {
