@@ -26,17 +26,19 @@ Welcome to Armored Core Garage (ACG), a TypeScript based web application develop
 First, install the dependencies:
 
 ```bash
-npm install
-# or
-yarn install
+pnpm install
 ```
 
 To run the development server:
 
 ```bash
-npm run dev
-# or
-yarn dev
+pnpm run dev
+```
+
+Connect to planetscale db:
+
+```bash
+pscale connect <database-name>
 ```
 
 Navigate to [http://localhost:3000](http://localhost:3000) in your browser to view the application.
