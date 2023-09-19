@@ -37,7 +37,7 @@ export default function Nineball() {
   }, [messages]);
 
   React.useEffect(() => {
-    if (isDevelopment) {
+    if (!isDevelopment) {
       append({
         role: 'user',
         content: initPrompt,
