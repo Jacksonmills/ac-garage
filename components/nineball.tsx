@@ -43,7 +43,8 @@ export default function Nineball() {
         content: initPrompt,
       });
     }
-  }, [append]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   React.useEffect(() => {
     if (window) {
