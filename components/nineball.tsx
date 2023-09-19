@@ -30,21 +30,18 @@ export default function Nineball() {
     dragControls.start(event, { snapToCursor: false });
   }
 
+  if (!isDevelopment) {
+    append({
+      role: 'user',
+      content: initPrompt,
+    });
+  }
+
   React.useEffect(() => {
     if (elementRef.current) {
       elementRef.current.scrollTop = elementRef.current.scrollHeight;
     }
   }, [messages]);
-
-  React.useEffect(() => {
-    if (!isDevelopment) {
-      append({
-        role: 'user',
-        content: initPrompt,
-      });
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   React.useEffect(() => {
     if (window) {
